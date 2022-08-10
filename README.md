@@ -1,6 +1,6 @@
 <h1>Приложение "Кошелек" для записи своих финансов и карточек.</h1>
 
-Работу приложения можно глянуть тут: <a href="https://bardier-wallet.herokuapp.com/">bardier-wallet.herokuapp.com</a>
+Работу приложения можно глянуть тут: <a href="https://bardier-wallet.herokuapp.com/" target ="_blank">bardier-wallet.herokuapp.com</a>
 
 <h3>Установка и запуск:</h3>
 <ul>
@@ -15,7 +15,7 @@
 	<li><b>React</b> на стандартной сборке <code>create-react-app</code></li>
 	<li><b>Redux</b> + <b>@reduxjs/toolkit</b></li>
 	<li><b>Scss</b></li>
-	<li><b>API</b> <a href="https://binlist.net/">binlist.net</a></li>
+	<li><b>API</b> <a href="https://binlist.net/" target ="_blank">binlist.net</a></li>
 </ul>
 
 <h3>Реализованный функционал:</h3>
