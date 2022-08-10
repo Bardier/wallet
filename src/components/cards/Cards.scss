@@ -31,14 +31,13 @@
   gap: 10px;
   border: 2px solid grey;
 
-  &__bank {
-  }
-
   &__payment-system {
     justify-self: end;
-  }
+    text-transform: uppercase;
 
-  &__balance {
+    & img {
+      width: 50px;
+    }
   }
 
   &__type {
@@ -46,12 +45,12 @@
   }
 
   &__number {
+    justify-self: start;
+    cursor: pointer;
   }
 
   &__number-copy-btn {
     justify-self: end;
-  }
-
-  &__date {
+    cursor: pointer;
   }
 }

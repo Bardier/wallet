@@ -1,30 +1,71 @@
 import "./Cards.scss";
 
+import React from "react";
+import visaImg from "../../resurse/visa.png";
+import masterCardImg from "../../resurse/master_card.png";
+
 import { useSelector, useDispatch } from "react-redux";
-import { selectCards, delCard } from "../../store/storeSlice";
+import { selectCards, delCard, setBalance } from "../../store/storeSlice";
 
-import { Link } from "react-router-dom";
-
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function Card({ card, delHandler }) {
+  const dispatch = useDispatch();
+  dispatch(setBalance());
+
+  let paymentSystemRender = null;
+  if (card.paymentSystem === "visa") {
+    paymentSystemRender = React.createElement("img", {
+      src: visaImg,
+    });
+  } else if (card.paymentSystem === "mastercard") {
+    paymentSystemRender = React.createElement("img", {
+      src: masterCardImg,
+    });
+  } else paymentSystemRender = card.paymentSystem;
+
+  const [hiddenCard, setHiddenCard] = useState(true);
+
+  const hiddenNumber = `${card.number.slice(
+    0,
+    4
+  )} **** **** ${card.number.slice(12, 16)}`;
+
+  const numberHandler = () => {
+    setHiddenCard(() => !hiddenCard);
+  };
+
   return (
     <div className="cards__card-wrapper">
       <ul className="cards__card card">
         <li className="card__bank">{card.bank}</li>
-        <li className="card__payment-system">{card.paymentSystem}</li>
+        <li className="card__payment-system">{paymentSystemRender}</li>
         <li className="card__balance">
-          {card.balance} {card.currency}
+          {`${card.balance}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")}{" "}
+          {card.currency}
         </li>
         <li className="card__type">{card.type}</li>
-        <li className="card__number">{card.number}</li>
-        <li className="card__number-copy-btn">copy</li>
+        <li className="card__number" onClick={numberHandler}>
+          {hiddenCard
+            ? hiddenNumber.replace(/\B(?=(\d{4})+(?!\d))/g, " ")
+            : card.number.replace(/\B(?=(\d{4})+(?!\d))/g, " ")}
+        </li>
+        <li
+          className="card__number-copy-btn"
+          onClick={() => {
+            navigator.clipboard.writeText(card.number);
+          }}
+        >
+          copy
+        </li>
         <li className="card__date">{card.date}</li>
       </ul>
       <button
         className="btn btn--remove"
-        onClick={() => delHandler(card.number)}
+        onClick={() => {
+          delHandler(card.number);
+          dispatch(setBalance());
+        }}
       >
         Видалити
       </button>
@@ -32,7 +73,7 @@ function Card({ card, delHandler }) {
   );
 }
 
-function Cards({ setModalActive }) {
+function Cards({ setModalActive, setCreateNewCard, setModalFor }) {
   const dispatch = useDispatch();
   const cardsArr = useSelector(selectCards);
 
@@ -40,7 +81,7 @@ function Cards({ setModalActive }) {
 
   useEffect(() => {
     setCards(cardsArr);
-  });
+  }, [cardsArr]);
 
   const delHandler = (id) => {
     dispatch(delCard(id));
@@ -49,10 +90,16 @@ function Cards({ setModalActive }) {
   return (
     <div className="cards">
       <div className="cards__btns-wrapper">
-        <Link to="/" className="btn btn--add">
+        <button className="btn btn--add" onClick={() => setCreateNewCard(true)}>
           Додати картку
-        </Link>
-        <button className="btn btn--add" onClick={() => setModalActive(true)}>
+        </button>
+        <button
+          className="btn btn--add"
+          onClick={() => {
+            setModalActive(true);
+            setModalFor("cash");
+          }}
+        >
           Додати готiвку
         </button>
       </div>

@@ -1,11 +1,16 @@
 import "./CashPopup.scss";
 
 import { useSelector, useDispatch } from "react-redux";
-import { selectCash, setCash } from "../../store/storeSlice";
+import {
+  selectCash,
+  setCash,
+  setBalance,
+  refactoringCard,
+} from "../../store/storeSlice";
 
 import { useState } from "react";
 
-function CashPopup({ active, setActive }) {
+function CashPopup({ active, setActive, modalFor, refactoringCardID }) {
   const [typeCurrency, setTypeCurrency] = useState("currency");
   const [amount, setAmount] = useState("");
   const [formError, setFormError] = useState(false);
@@ -22,7 +27,15 @@ function CashPopup({ active, setActive }) {
       return;
     }
 
-    dispatch(setCash([typeCurrency, amount]));
+    switch (modalFor) {
+      case "cash":
+        dispatch(setCash([typeCurrency, amount]));
+        break;
+      case "card":
+        dispatch(refactoringCard([refactoringCardID, typeCurrency, amount]));
+        break;
+    }
+    dispatch(setBalance());
 
     setTypeCurrency("currency");
     setAmount("");

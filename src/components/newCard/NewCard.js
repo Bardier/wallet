@@ -1,16 +1,15 @@
 import "./NewCard.scss";
 
-import { Link } from "react-router-dom";
-
-import { useDispatch } from "react-redux";
-import { setCard } from "../../store/storeSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { setCard, selectCards } from "../../store/storeSlice";
 
 import { useState } from "react";
 
-function NewCard() {
+function NewCard({ setCreateNewCard }) {
   const dispatch = useDispatch();
+  const cardsArr = useSelector(selectCards);
 
-  const [cardNumber, setCardNumber] = useState("5168123412341234");
+  const [cardNumber, setCardNumber] = useState("");
   const [cardDate, setCardDate] = useState("");
   const [cardCvc, setCardCvc] = useState("");
   const [cardHolder, setCardHolder] = useState("");
@@ -24,25 +23,54 @@ function NewCard() {
   const [amountError, setAmountError] = useState(false);
   const [currencyError, setCurrencyError] = useState(false);
 
-  const formHandler = (e) => {
+  const formHandler = async (e) => {
     e.preventDefault();
     if (checkingForm()) return;
 
-    console.log(getCardInfo());
+    await fetch(`https://lookup.binlist.net/${cardNumber}`)
+      .then((res) => res.json())
+      .then((data) => {
+        let bank;
+
+        try {
+          bank = data.bank.name;
+        } catch (e) {
+          bank = "Unknown Bank";
+        }
+
+        const newCard = {
+          number: cardNumber,
+          bank: bank,
+          paymentSystem: data.scheme,
+          balance: cardAmount,
+          currency: cardCurrency,
+          type: data.type,
+          date: cardDate,
+        };
+
+        dispatch(setCard(newCard));
+
+        setCreateNewCard(false);
+      })
+      .catch(() => {
+        console.log("Error!");
+        setNumberError(true);
+      });
   };
 
-  const getCardInfo = async () => {
-    const api =
-      "https://api.bincodes.com/bin/?format=json&api_key=205495d5d0d24045cd4ce358d8521d6e/&bin=";
-
-    const res = await fetch(`${api}${cardNumber.slice(0, 6)}`);
-
-    return res.data;
-  };
-
-  // !Тут по хорошему, прикрутить какуе-то билиотеку для всех input
-  // * Проверка полей формы на валидность
   const checkingForm = () => {
+    // * Проверка на дубли карт в store
+    let dublCard = false;
+    cardsArr.forEach((card) => {
+      if (card.number === cardNumber) dublCard = true;
+    });
+    if (dublCard) {
+      setNumberError(true);
+      return true;
+    } else setNumberError(false);
+
+    // !Тут по хорошему, прикрутить какуе-то билиотеку для всех input
+    // * Проверка полей формы на валидность
     if (cardNumber.match(/\D/) || cardNumber.length !== 16) {
       setNumberError(true);
       return true;
@@ -130,9 +158,13 @@ function NewCard() {
           <button className="btn btn--add" type="submit">
             Додати картку
           </button>
-          <Link to="/cards" className="btn btn--remove">
+          <button
+            className="btn btn--remove"
+            type="button"
+            onClick={() => setCreateNewCard(false)}
+          >
             Скасувати
-          </Link>
+          </button>
         </div>
       </form>
     </div>

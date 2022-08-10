@@ -4,45 +4,53 @@ export const storeSlice = createSlice({
   name: "store",
   initialState: {
     balance: {
-      UAH: "0",
+      UAH: 0,
       USD: 0,
       EUR: 0,
     },
     cash: {
-      UAH: "0",
+      UAH: 0,
       USD: 0,
       EUR: 0,
     },
-    cards: [
-      {
-        number: "5168 1234 1234 1234",
-        bank: "Mono",
-        paymentSystem: "VISA",
-        balance: "287.5",
-        currency: "UAH",
-        type: "debit",
-        date: "10/11",
-      },
-      {
-        number: "5168 1234 1234 3211",
-        bank: "Private",
-        paymentSystem: "VISA",
-        balance: "2287.5",
-        currency: "UAH",
-        type: "debit",
-        date: "10/11",
-      },
-    ],
+    cards: [],
   },
   reducers: {
     setCash: (state, data) => {
-      state.cash[data.payload[0]] = +data.payload[1];
+      const [currency, amount] = data.payload;
+      state.cash[currency] = +amount;
     },
 
-    setBalance: (state) => {},
+    setBalance: (state) => {
+      state.balance.UAH = +state.cash.UAH;
+      state.balance.USD = +state.cash.USD;
+      state.balance.EUR = +state.cash.EUR;
+
+      state.cards.forEach((card) => {
+        state.balance.UAH += card.currency === "UAH" ? +card.balance : 0;
+        state.balance.USD += card.currency === "USD" ? +card.balance : 0;
+        state.balance.EUR += card.currency === "EUR" ? +card.balance : 0;
+      });
+    },
 
     setCard: (state, data) => {
-      console.log(data.payload);
+      let dublCard = false;
+      state.cards.forEach((card) => {
+        if (card.number === data.payload.number) {
+          dublCard = true;
+        }
+      });
+      if (!dublCard) state.cards.push(data.payload);
+    },
+
+    refactoringCard: (state, data) => {
+      const [id, currency, balance] = data.payload;
+      state.cards.forEach((card) => {
+        if (card.number === id) {
+          card.currency = currency;
+          card.balance = balance;
+        }
+      });
     },
 
     delCard: (state, data) => {
@@ -51,7 +59,8 @@ export const storeSlice = createSlice({
   },
 });
 
-export const { setBalance, setCash, setCard, delCard } = storeSlice.actions;
+export const { setBalance, setCash, setCard, refactoringCard, delCard } =
+  storeSlice.actions;
 
 export const selectBalance = (state) => state.store.balance;
 export const selectCash = (state) => state.store.cash;

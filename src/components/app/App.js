@@ -1,6 +1,5 @@
 import "./App.scss";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
 import Balance from "../balance/Balance";
@@ -10,23 +9,33 @@ import CashPopup from "../cashPopup/CashPopup";
 
 function App() {
   const [modalActive, setModalActive] = useState(false);
+  const [modalFor, setModalFor] = useState();
+  const [refactoringCardID, setRefactoringCardID] = useState();
+  const [createNewCard, setCreateNewCard] = useState(true);
 
   return (
     <div className="app">
-      <Router>
-        <Balance setModalActive={setModalActive} />
+      <Balance
+        setModalActive={setModalActive}
+        setModalFor={setModalFor}
+        setRefactoringCardID={setRefactoringCardID}
+      />
+      {createNewCard ? (
+        <NewCard setCreateNewCard={setCreateNewCard} />
+      ) : (
+        <Cards
+          setModalActive={setModalActive}
+          setModalFor={setModalFor}
+          setCreateNewCard={setCreateNewCard}
+        />
+      )}
 
-        <Routes>
-          <Route path="/" element={<NewCard />} />
-          <Route
-            path="/cards"
-            element={<Cards setModalActive={setModalActive} />}
-          />
-          {/* <Route path="*" element={<Error />} /> */}
-        </Routes>
-      </Router>
-
-      <CashPopup active={modalActive} setActive={setModalActive} />
+      <CashPopup
+        active={modalActive}
+        setActive={setModalActive}
+        modalFor={modalFor}
+        refactoringCardID={refactoringCardID}
+      />
     </div>
   );
 }
