@@ -76,7 +76,7 @@ function NewCard({ setCreateNewCard }) {
       return true;
     } else setNumberError(false);
 
-    if (cardDate.length > 5 || cardDate.length < 3) {
+    if (cardDate.length > 7 || cardDate.length < 3) {
       setDateError(true);
       return true;
     } else setDateError(false);
