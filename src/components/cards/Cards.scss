@@ -1,0 +1,57 @@
+.cards {
+  padding: 20px;
+  border: 2px solid grey;
+  border-left: none;
+
+  &__btns-wrapper {
+    margin-bottom: 20px;
+
+    & .btn:not(:last-child) {
+      margin-right: 30px;
+    }
+  }
+
+  &__card-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.card {
+  margin: 0 10px 0 0;
+  padding: 10px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 250px 50px;
+  gap: 10px;
+  border: 2px solid grey;
+
+  &__bank {
+  }
+
+  &__payment-system {
+    justify-self: end;
+  }
+
+  &__balance {
+  }
+
+  &__type {
+    justify-self: end;
+  }
+
+  &__number {
+  }
+
+  &__number-copy-btn {
+    justify-self: end;
+  }
+
+  &__date {
+  }
+}

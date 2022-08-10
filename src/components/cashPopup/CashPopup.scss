@@ -1,0 +1,25 @@
+.cash {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+
+  &__content {
+    background-color: #f7ebeb;
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+}

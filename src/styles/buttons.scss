@@ -1,0 +1,23 @@
+.btn {
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  font: inherit;
+  align-self: flex-start;
+
+  &--edit {
+    background-color: lightblue;
+  }
+
+  &--add {
+    background-color: lightgreen;
+  }
+
+  &--remove {
+    background-color: lightcoral;
+  }
+}

@@ -1,0 +1,17 @@
+.newCard {
+  padding: 20px;
+  border: 2px solid grey;
+  border-left: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &__title {
+    margin-top: 0;
+  }
+
+  & .form {
+    padding: 0;
+    border: none;
+  }
+}
