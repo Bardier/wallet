@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/wallet/static/css/main.16ba2851.css",
+    "main.js": "/wallet/static/js/main.7efe0f9d.js",
+    "static/media/master_card.png": "/wallet/static/media/master_card.fcf2489ab5edefa24cf4.png",
+    "static/media/visa.png": "/wallet/static/media/visa.84d56aa7ece7d3643526.png",
+    "index.html": "/wallet/index.html",
+    "main.16ba2851.css.map": "/wallet/static/css/main.16ba2851.css.map",
+    "main.7efe0f9d.js.map": "/wallet/static/js/main.7efe0f9d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.16ba2851.css",
+    "static/js/main.7efe0f9d.js"
+  ]
+}
