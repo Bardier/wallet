@@ -1,6 +1,6 @@
 <h1>Приложение "Кошелек" для записи своих финансов и карточек.</h1>
 
-Работу приложения можно глянуть тут: <a href="https://bardier-wallet.herokuapp.com/" target ="_blank">bardier-wallet.herokuapp.com</a>
+Работу приложения можно глянуть тут: <a href="http://bardier.github.io/wallet" target ="_blank">http://bardier.github.io/wallet</a>
 
 <h3>Установка и запуск:</h3>
 <ul>
